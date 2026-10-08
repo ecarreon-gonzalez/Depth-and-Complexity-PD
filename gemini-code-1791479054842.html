@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DISD Depth & Complexity Interactive Hub</title>
+  <style>
+    :root {
+      --primary: #003366;
+      --secondary: #008080;
+      --accent: #ff9900;
+      --bg: #f4f6f9;
+      --card-bg: #ffffff;
+      --text: #333333;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .badge {
+      background-color: var(--accent);
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.85rem;
+    }
+
+    main {
+      flex: 1;
+      max-width: 800px;
+      width: 100%;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
+      box-sizing: border-box;
+    }
+
+    .module-card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    h2 {
+      color: var(--primary);
+      margin-top: 0;
+      border-bottom: 2px solid var(--bg);
+      padding-bottom: 0.5rem;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    button.btn {
+      flex: 1;
+      min-width: 120px;
+      padding: 0.8rem 1rem;
+      border: 2px solid var(--primary);
+      background-color: white;
+      color: var(--primary);
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    button.btn:hover, button.btn.active {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .scale-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 1rem;
+    }
+
+    .scale-btn {
+      padding: 1rem;
+      border: 2px solid var(--secondary);
+      border-radius: 8px;
+      background: white;
+      color: var(--secondary);
+      font-weight: bold;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .scale-btn:hover, .scale-btn.active {
+      background-color: var(--secondary);
+      color: white;
+    }
+
+    .feedback-box {
+      margin-top: 1rem;
+      padding: 1rem;
+      background-color: #eef7f7;
+      border-left: 4px solid var(--secondary);
+      border-radius: 4px;
+      display: none;
+    }
+
+    textarea {
+      width: 100%;
+      height: 80px;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .corners-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 1rem;
+    }
+
+    .corner-card {
+      border: 2px dashed #ccc;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .corner-card.selected {
+      border-color: var(--accent);
+      background-color: #fff8ee;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      color: #666;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>DISD: Depth & Complexity Companion</h1>
+    <span class="badge" id="group-badge">Assigned Icon: 1 (Patterns)</span>
+  </header>
+
+  <main>
+    <!-- Section 1: Problem Type Gesture Polling (Slides 4-8) -->
+    <div class="module-card">
+      <h2>1. Problem Type Gesture Poll (Slides 4–8)</h2>
+      <p>Classify the active problem type presented on screen:</p>
+      
+      <div class="btn-group">
+        <button class="btn" onclick="submitGesture('Depth')">Ⓓ Depth</button>
+        <button class="btn" onclick="submitGesture('Complexity')">Ⓒ Complexity</button>
+      </div>
+
+      <div class="feedback-box" id="gesture-feedback">
+        <strong>Selection Logged!</strong>
+        <p id="gesture-prompt">Why does this problem type fit your selection?</p>
+        <textarea placeholder="Type your quick rationale here..."></textarea>
+      </div>
+    </div>
+
+    <!-- Section 2: 4-Finger Scale Selector (Slides 13-20) -->
+    <div class="module-card">
+      <h2>2. Icon Selector Scale (Slides 13–20)</h2>
+      <p>Select which target icon applies to the current lesson example:</p>
+
+      <div class="scale-grid">
+        <button class="scale-btn" onclick="selectIcon(1)">
+          <strong>⓵ Pattern</strong><br><small>Repetition & Trends</small>
+        </button>
+        <button class="scale-btn" onclick="selectIcon(2)">
+          <strong>⓶ Rules</strong><br><small>Structure & Organization</small>
+        </button>
+        <button class="scale-btn" onclick="selectIcon(3)">
+          <strong>⓷ Language</strong><br><small>Content Vocabulary</small>
+        </button>
+        <button class="scale-btn" onclick="selectIcon(4)">
+          <strong>⓸ Across Disciplines</strong><br><small>Cross-Subject Connections</small>
+        </button>
+      </div>
+
+      <div class="feedback-box" id="icon-feedback">
+        <strong id="icon-title">Prompt Question Revealed:</strong>
+        <p id="icon-question"></p>
+      </div>
+    </div>
+
+    <!-- Section 3: Make Your Mark Submission (Slide 23) -->
+    <div class="module-card">
+      <h2>3. "Make Your Mark" Carnegie Lesson Search (Slide 23)</h2>
+      <p>Scan your Carnegie lesson for your assigned icon and record your findings below:</p>
+      <textarea id="lesson-notes" placeholder="Note the page number and task where your icon appears..."></textarea>
+      <button class="btn" style="margin-top: 10px; width: 100%;" onclick="saveNotes()">Submit Lesson Spotting</button>
+    </div>
+
+    <!-- Section 4: 4 Corners Reflection (Slide 25) -->
+    <div class="module-card">
+      <h2>4. Four Corners Reflection (Slide 25)</h2>
+      <p>Select the option that best reflects your current view:</p>
+
+      <div class="corners-grid">
+        <div class="corner-card" onclick="selectCorner(1, 'Group 1 + Group 4')">
+          <strong>①</strong><br>I already provide opportunities to do this
+        </div>
+        <div class="corner-card" onclick="selectCorner(2, 'Group 2 + Group 3')">
+          <strong>②</strong><br>I can easily include opportunities to do this
+        </div>
+        <div class="corner-card" onclick="selectCorner(3, 'Group 2 + Group 3')">
+          <strong>③</strong><br>This will take some planning
+        </div>
+        <div class="corner-card" onclick="selectCorner(4, 'Group 1 + Group 4')">
+          <strong>④</strong><br>I am not sure how to provide this…yet
+        </div>
+      </div>
+
+      <div class="feedback-box" id="corner-feedback">
+        <strong>Partner Instructions:</strong>
+        <p id="partner-match"></p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Dallas ISD Curriculum Support • Depth and Complexity Framework
+  </footer>
+
+  <script>
+    // Random Icon Assignment on Page Load (Slide 23)
+    const icons = ["1 (Patterns)", "2 (Rules)", "3 (Language)", "4 (Across Disciplines)"];
+    const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+    document.getElementById('group-badge').innerText = `Assigned Icon: ${randomIcon}`;
+
+    // Gesture Poll Handler
+    function submitGesture(type) {
+      const feedback = document.getElementById('gesture-feedback');
+      feedback.style.display = 'block';
+      document.querySelectorAll('.btn-group .btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    // Icon Selector Handler (Slides 13-20)
+    const iconQuestions = {
+      1: "What pattern(s) can be revealed from this problem?",
+      2: "What rule(s) can be established by reviewing the responses?",
+      3: "How does this help students make vocabulary connections?",
+      4: "How does this extend across disciplines?"
+    };
+
+    function selectIcon(num) {
+      const feedback = document.getElementById('icon-feedback');
+      const questionBox = document.getElementById('icon-question');
+      questionBox.innerText = iconQuestions[num];
+      feedback.style.display = 'block';
+      document.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+    }
+
+    // Save Lesson Findings
+    function saveNotes() {
+      const notes = document.getElementById('lesson-notes').value;
+      if(notes.trim() !== "") {
+        alert("Your finding has been submitted to the session activity board!");
+      } else {
+        alert("Please enter a note before submitting.");
+      }
+    }
+
+    // 4 Corners Handler
+    function selectCorner(num, pairing) {
+      document.querySelectorAll('.corner-card').forEach(c => c.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+      
+      const feedback = document.getElementById('corner-feedback');
+      const matchText = document.getElementById('partner-match');
+      
+      matchText.innerHTML = `You selected Corner ${num}. When instructed, pair up with participants in your corner. In Phase 2, move to combine with <strong>${pairing}</strong> to discuss your instruction strategies!`;
+      feedback.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
