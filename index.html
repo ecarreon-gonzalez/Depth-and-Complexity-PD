@@ -173,6 +173,100 @@
       </div>
 
     </section>
+
+    <!-- STEP 3: Workshop Closing & Attendance Sign-Off -->
+    <section id="view-closing" class="hidden bg-white border border-slate-200 shadow-sm rounded-2xl p-6 sm:p-10 max-w-2xl mx-auto w-full transition-all">
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-teal-100 shadow-inner text-3xl font-bold">
+          🎓
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#003366] tracking-tight mb-2">
+          Workshop Attendance & Sign-Off
+        </h2>
+        <p class="text-slate-600 text-xs sm:text-sm leading-relaxed max-w-lg mx-auto">
+          Thank you for participating! Please submit your details below to record your session attendance, verify your engagement, and conclude the workshop.
+        </p>
+      </div>
+
+      <!-- Attendance Input Form -->
+      <div id="closing-form-card" class="space-y-4">
+        <div>
+          <label for="close-name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            Full Name <span class="text-rose-500">*</span>
+          </label>
+          <input type="text" id="close-name" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm font-sans" placeholder="e.g., Maria Hernandez" required>
+        </div>
+
+        <div>
+          <label for="close-email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            Dallas ISD Email Address <span class="text-rose-500">*</span>
+          </label>
+          <input type="email" id="close-email" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm font-sans" placeholder="e.g., mhernandez@dallasisd.org" required>
+        </div>
+
+        <div>
+          <label for="close-campus" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            School / Campus Name (Optional)
+          </label>
+          <input type="text" id="close-campus" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm font-sans" placeholder="e.g., Thomas Jefferson High School">
+        </div>
+
+        <!-- Inline error alert (replaces browser alerts) -->
+        <div id="closing-error-msg" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-700 font-medium"></div>
+
+        <button id="btn-submit-closing" type="button" class="w-full py-3.5 bg-teal-700 hover:bg-teal-800 active:scale-[0.98] text-white font-semibold rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm sm:text-base mt-2">
+          <span>Record Attendance &amp; Close Session</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+        </button>
+      </div>
+
+      <!-- Success Confirmation Card (Shown after submit) -->
+      <div id="closing-success-card" class="hidden text-center space-y-4 pt-2">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-300">
+          <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+          Attendance Documented
+        </div>
+
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-left text-xs sm:text-sm space-y-2 text-slate-700">
+          <div class="flex justify-between border-b border-slate-200 pb-1.5">
+            <span class="font-medium text-slate-500">Participant:</span>
+            <span id="recap-name" class="font-bold text-slate-900">--</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-200 pb-1.5">
+            <span class="font-medium text-slate-500">Email:</span>
+            <span id="recap-email" class="font-bold text-slate-900">--</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-200 pb-1.5">
+            <span class="font-medium text-slate-500">Campus:</span>
+            <span id="recap-campus" class="font-semibold text-slate-800">--</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-200 pb-1.5">
+            <span class="font-medium text-slate-500">Assigned Icon Lens:</span>
+            <span id="recap-icon" class="font-semibold text-teal-700">--</span>
+          </div>
+          <div class="flex justify-between pt-0.5">
+            <span class="font-medium text-slate-500">Timestamp:</span>
+            <span id="recap-timestamp" class="text-slate-600">--</span>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-2.5 pt-2">
+          <button id="btn-download-slip" type="button" class="flex-1 py-2.5 px-4 bg-[#003366] hover:bg-[#002244] text-white text-xs sm:text-sm font-semibold rounded-xl transition shadow-sm flex items-center justify-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            Download Verification Slip
+          </button>
+          <button id="btn-export-all" type="button" class="py-2.5 px-4 border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs sm:text-sm font-semibold rounded-xl transition">
+            Export All Attendance (CSV)
+          </button>
+        </div>
+
+        <div class="pt-4 border-t border-slate-100">
+          <button id="btn-restart-session" type="button" class="text-xs text-slate-500 hover:text-slate-800 underline">
+            Return to Welcome Screen
+          </button>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- Toast Message Overlay (Replaces alerts) -->
@@ -603,7 +697,7 @@
           symbol: "🎉",
           headline: "Thank You, Dallas ISD Educators!",
           subtext: "Deepening thinking across our classrooms",
-          body: "<div class='text-center py-6'><p class='text-lg font-bold text-[#003366] mb-2'>Thank you for exploring the depth and complexity of our curriculum with us!</p><p class='text-sm text-slate-500'>Keep prompting your mathematicians with patterns, rules, vocabulary, and cross-disciplinary connections.</p></div>",
+          body: "<div class='text-center py-6'><p class='text-lg font-bold text-[#003366] mb-2'>Thank you for exploring the depth and complexity of our curriculum with us!</p><p class='text-sm text-slate-500 mb-6'>Keep prompting your mathematicians with patterns, rules, vocabulary, and cross-disciplinary connections.</p><button id='btn-direct-close' type='button' class='px-6 py-3 bg-teal-700 hover:bg-teal-800 text-white font-semibold rounded-xl text-sm shadow-md transition inline-flex items-center gap-2'><span>Record Attendance &amp; Close Session →</span></button></div>",
           note: "Closing slide. Thank educators for their dedication and engagement!",
           act: null
         }
@@ -628,9 +722,16 @@
       // Views
       const viewWelcome = document.getElementById("view-welcome");
       const viewDeck = document.getElementById("view-deck");
+      const viewClosing = document.getElementById("view-closing");
       const btnStart = document.getElementById("btn-start");
       const btnPrev = document.getElementById("btn-prev");
       const btnNext = document.getElementById("btn-next");
+
+      function openClosingView() {
+        viewDeck.classList.add("hidden");
+        viewClosing.classList.remove("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
 
       btnStart.addEventListener("click", function () {
         viewWelcome.classList.add("hidden");
@@ -649,7 +750,135 @@
         if (currentSlide < deck.length - 1) {
           currentSlide++;
           renderSlide();
+        } else if (currentSlide === deck.length - 1) {
+          openClosingView();
         }
+      });
+
+      // Closing View logic & attendance capture
+      const btnSubmitClosing = document.getElementById("btn-submit-closing");
+      const closingErrorMsg = document.getElementById("closing-error-msg");
+      const closingFormCard = document.getElementById("closing-form-card");
+      const closingSuccessCard = document.getElementById("closing-success-card");
+      let registeredAttendee = null;
+
+      btnSubmitClosing.addEventListener("click", function () {
+        const nameVal = document.getElementById("close-name").value.trim();
+        const emailVal = document.getElementById("close-email").value.trim();
+        const campusVal = document.getElementById("close-campus").value.trim() || "Not Specified";
+
+        closingErrorMsg.classList.add("hidden");
+
+        if (!nameVal || !emailVal) {
+          closingErrorMsg.innerText = "Please enter both your Full Name and Dallas ISD Email Address.";
+          closingErrorMsg.classList.remove("hidden");
+          return;
+        }
+
+        if (!emailVal.includes("@")) {
+          closingErrorMsg.innerText = "Please enter a valid email address.";
+          closingErrorMsg.classList.remove("hidden");
+          return;
+        }
+
+        const record = {
+          name: nameVal,
+          email: emailVal,
+          campus: campusVal,
+          assignedIcon: assignedIcon,
+          timestamp: new Date().toLocaleString()
+        };
+
+        registeredAttendee = record;
+
+        // Persist to session storage
+        try {
+          const stored = JSON.parse(localStorage.getItem("disd_session_attendance") || "[]");
+          stored.push(record);
+          localStorage.setItem("disd_session_attendance", JSON.stringify(stored));
+        } catch (e) {
+          // graceful fallback if local storage restricted
+        }
+
+        // Populate recap
+        document.getElementById("recap-name").innerText = record.name;
+        document.getElementById("recap-email").innerText = record.email;
+        document.getElementById("recap-campus").innerText = record.campus;
+        document.getElementById("recap-icon").innerText = record.assignedIcon;
+        document.getElementById("recap-timestamp").innerText = record.timestamp;
+
+        closingFormCard.classList.add("hidden");
+        closingSuccessCard.classList.remove("hidden");
+        showToast("Attendance successfully documented!");
+      });
+
+      // Download Verification Slip
+      document.getElementById("btn-download-slip").addEventListener("click", function () {
+        if (!registeredAttendee) return;
+        const slipText = `DALLAS ISD DEPTH & COMPLEXITY WORKSHOP\n` +
+          `PROFESSIONAL DEVELOPMENT COMPLETION SLIP\n` +
+          `==========================================\n` +
+          `Participant: ${registeredAttendee.name}\n` +
+          `Email: ${registeredAttendee.email}\n` +
+          `Campus: ${registeredAttendee.campus}\n` +
+          `Assigned Lens: ${registeredAttendee.assignedIcon}\n` +
+          `Date & Time: ${registeredAttendee.timestamp}\n` +
+          `Session: Math HQIM & Quarter 2 IPC Connections\n` +
+          `==========================================\n` +
+          `Dallas Independent School District • Curriculum & Instruction`;
+
+        const blob = new Blob([slipText], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `DISD_Attendance_${registeredAttendee.name.replace(/[^a-zA-Z0-9]/g, "_")}.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+
+      // Export CSV
+      document.getElementById("btn-export-all").addEventListener("click", function () {
+        let records = [];
+        try {
+          records = JSON.parse(localStorage.getItem("disd_session_attendance") || "[]");
+        } catch (e) {
+          records = registeredAttendee ? [registeredAttendee] : [];
+        }
+
+        if (records.length === 0 && registeredAttendee) {
+          records = [registeredAttendee];
+        }
+
+        if (records.length === 0) {
+          showToast("No attendance records to export yet.");
+          return;
+        }
+
+        let csv = "Name,Email,Campus,Assigned_Icon,Timestamp\n";
+        records.forEach(r => {
+          csv += `"${r.name}","${r.email}","${r.campus}","${r.assignedIcon}","${r.timestamp}"\n`;
+        });
+
+        const blob = new Blob([csv], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `DISD_Workshop_Attendance_${new Date().toISOString().slice(0, 10)}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+
+      // Reset / Restart
+      document.getElementById("btn-restart-session").addEventListener("click", function () {
+        viewClosing.classList.add("hidden");
+        viewWelcome.classList.remove("hidden");
+        currentSlide = 0;
+        closingFormCard.classList.remove("hidden");
+        closingSuccessCard.classList.add("hidden");
+        document.getElementById("close-name").value = "";
+        document.getElementById("close-email").value = "";
+        document.getElementById("close-campus").value = "";
+        window.scrollTo({ top: 0, behavior: "smooth" });
       });
 
       // Keyboard arrow navigation
@@ -767,7 +996,24 @@
 
         // Button States
         btnPrev.disabled = currentSlide === 0;
-        btnNext.disabled = currentSlide === deck.length - 1;
+        
+        // Handle Final Slide Next Button vs Normal Slide
+        if (currentSlide === deck.length - 1) {
+          btnNext.disabled = false;
+          btnNext.innerHTML = "Complete Session &amp; Sign Out →";
+          btnNext.classList.remove("bg-[#003366]");
+          btnNext.classList.add("bg-teal-700", "hover:bg-teal-800");
+
+          const directCloseBtn = document.getElementById("btn-direct-close");
+          if (directCloseBtn) {
+            directCloseBtn.addEventListener("click", openClosingView);
+          }
+        } else {
+          btnNext.disabled = false;
+          btnNext.innerHTML = "Next Slide →";
+          btnNext.classList.remove("bg-teal-700", "hover:bg-teal-800");
+          btnNext.classList.add("bg-[#003366]");
+        }
 
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
