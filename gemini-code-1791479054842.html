@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DISD Depth & Complexity Interactive Hub</title>
+  <title>Dallas ISD: Depth & Complexity Workshop</title>
   <style>
     :root {
       --primary: #003366;
@@ -20,9 +20,6 @@
       color: var(--text);
       margin: 0;
       padding: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
     }
 
     header {
@@ -32,13 +29,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
-    header h1 {
-      margin: 0;
-      font-size: 1.2rem;
-    }
+    header h1 { margin: 0; font-size: 1.1rem; }
 
     .badge {
       background-color: var(--accent);
@@ -50,267 +43,375 @@
     }
 
     main {
-      flex: 1;
-      max-width: 800px;
-      width: 100%;
-      margin: 1.5rem auto;
+      max-width: 850px;
+      margin: 2rem auto;
       padding: 0 1rem;
-      box-sizing: border-box;
     }
 
-    .module-card {
-      background-color: var(--card-bg);
+    .card {
+      background: white;
       border-radius: 8px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 2.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: center;
     }
 
-    h2 {
-      color: var(--primary);
-      margin-top: 0;
-      border-bottom: 2px solid var(--bg);
-      padding-bottom: 0.5rem;
+    .deck-card { text-align: left; }
+
+    .btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
     }
 
-    .btn-group {
+    .btn:disabled { background-color: #ccc; cursor: not-allowed; }
+
+    /* Responsive Iframe Aspect Ratio */
+    .slide-iframe-wrapper {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 Aspect Ratio */
+      background: #000;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .slide-iframe-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .act-box {
+      background-color: #eef7f7;
+      border: 2px solid var(--secondary);
+      border-radius: 8px;
+      padding: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    .btn-grid {
       display: flex;
       gap: 10px;
-      margin-top: 1rem;
+      margin-top: 0.8rem;
       flex-wrap: wrap;
     }
 
-    button.btn {
+    .opt-btn {
       flex: 1;
       min-width: 120px;
-      padding: 0.8rem 1rem;
+      padding: 0.8rem;
       border: 2px solid var(--primary);
-      background-color: white;
+      background: white;
       color: var(--primary);
       border-radius: 6px;
-      font-size: 1rem;
       font-weight: bold;
       cursor: pointer;
-      transition: all 0.2s ease;
     }
 
-    button.btn:hover, button.btn.active {
-      background-color: var(--primary);
+    .opt-btn.active {
+      background: var(--primary);
       color: white;
     }
 
-    .scale-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
+    .nav-bar {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1.5rem;
       gap: 10px;
-      margin-top: 1rem;
     }
 
-    .scale-btn {
-      padding: 1rem;
-      border: 2px solid var(--secondary);
-      border-radius: 8px;
-      background: white;
-      color: var(--secondary);
-      font-weight: bold;
-      cursor: pointer;
-      text-align: left;
-    }
-
-    .scale-btn:hover, .scale-btn.active {
-      background-color: var(--secondary);
-      color: white;
-    }
-
-    .feedback-box {
-      margin-top: 1rem;
-      padding: 1rem;
-      background-color: #eef7f7;
-      border-left: 4px solid var(--secondary);
-      border-radius: 4px;
-      display: none;
-    }
-
-    textarea {
-      width: 100%;
-      height: 80px;
-      padding: 0.5rem;
-      margin-top: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
-
-    .corners-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 1rem;
-    }
-
-    .corner-card {
-      border: 2px dashed #ccc;
-      padding: 1rem;
-      border-radius: 8px;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .corner-card.selected {
-      border-color: var(--accent);
-      background-color: #fff8ee;
-    }
-
-    footer {
-      text-align: center;
-      padding: 1rem;
-      color: #666;
-      font-size: 0.85rem;
-    }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>DISD: Depth & Complexity Companion</h1>
-    <span class="badge" id="group-badge">Assigned Icon: 1 (Patterns)</span>
+    <h1>Dallas ISD: Depth & Complexity</h1>
+    <span class="badge" id="badge">Session Active</span>
   </header>
 
   <main>
-    <!-- Section 1: Problem Type Gesture Polling (Slides 4-8) -->
-    <div class="module-card">
-      <h2>1. Problem Type Gesture Poll (Slides 4–8)</h2>
-      <p>Classify the active problem type presented on screen:</p>
-      
-      <div class="btn-group">
-        <button class="btn" onclick="submitGesture('Depth')">Ⓓ Depth</button>
-        <button class="btn" onclick="submitGesture('Complexity')">Ⓒ Complexity</button>
+    <!-- STEP 1: Welcome Screen -->
+    <div class="card" id="view-welcome">
+      <h2 style="color: var(--primary); margin-top:0;">Welcome to Depth & Complexity in the Curriculum</h2>
+      <p style="font-size: 1.1rem; line-height: 1.6; color: #555;">
+        In this session, we will explore our Dallas ISD curriculum, identify opportunities within HQIM math lessons, and practice using Depth & Complexity visual icons to elevate student thinking.
+      </p>
+      <div style="background: #eef7f7; border-left: 4px solid var(--secondary); padding: 1rem; margin: 1.5rem 0; text-align: left; border-radius: 4px;">
+        <strong>Session Highlights:</strong>
+        <ul style="margin: 0.5rem 0 0 1.2rem; padding: 0;">
+          <li>Interactive Problem Type Classifications (TPR)</li>
+          <li>Four-Finger Scale Icon Selection</li>
+          <li>Carnegie Lesson Exploration</li>
+          <li>4 Corners Reflection</li>
+        </ul>
       </div>
-
-      <div class="feedback-box" id="gesture-feedback">
-        <strong>Selection Logged!</strong>
-        <p id="gesture-prompt">Why does this problem type fit your selection?</p>
-        <textarea placeholder="Type your quick rationale here..."></textarea>
-      </div>
+      <button class="btn" id="start-btn" style="width: 100%; font-size: 1.1rem; padding: 1rem;" type="button">Begin Workshop Session →</button>
     </div>
 
-    <!-- Section 2: 4-Finger Scale Selector (Slides 13-20) -->
-    <div class="module-card">
-      <h2>2. Icon Selector Scale (Slides 13–20)</h2>
-      <p>Select which target icon applies to the current lesson example:</p>
-
-      <div class="scale-grid">
-        <button class="scale-btn" onclick="selectIcon(1)">
-          <strong>⓵ Pattern</strong><br><small>Repetition & Trends</small>
-        </button>
-        <button class="scale-btn" onclick="selectIcon(2)">
-          <strong>⓶ Rules</strong><br><small>Structure & Organization</small>
-        </button>
-        <button class="scale-btn" onclick="selectIcon(3)">
-          <strong>⓷ Language</strong><br><small>Content Vocabulary</small>
-        </button>
-        <button class="scale-btn" onclick="selectIcon(4)">
-          <strong>⓸ Across Disciplines</strong><br><small>Cross-Subject Connections</small>
-        </button>
+    <!-- STEP 2: Slide Deck View -->
+    <div class="card deck-card hidden" id="view-deck">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <h3 id="s-title" style="margin:0; color:var(--primary);">Slide Title</h3>
+        <span id="s-progress" style="font-weight:bold; color:var(--secondary);">Slide 1 of 26</span>
       </div>
 
-      <div class="feedback-box" id="icon-feedback">
-        <strong id="icon-title">Prompt Question Revealed:</strong>
-        <p id="icon-question"></p>
-      </div>
-    </div>
-
-    <!-- Section 3: Make Your Mark Submission (Slide 23) -->
-    <div class="module-card">
-      <h2>3. "Make Your Mark" Carnegie Lesson Search (Slide 23)</h2>
-      <p>Scan your Carnegie lesson for your assigned icon and record your findings below:</p>
-      <textarea id="lesson-notes" placeholder="Note the page number and task where your icon appears..."></textarea>
-      <button class="btn" style="margin-top: 10px; width: 100%;" onclick="saveNotes()">Submit Lesson Spotting</button>
-    </div>
-
-    <!-- Section 4: 4 Corners Reflection (Slide 25) -->
-    <div class="module-card">
-      <h2>4. Four Corners Reflection (Slide 25)</h2>
-      <p>Select the option that best reflects your current view:</p>
-
-      <div class="corners-grid">
-        <div class="corner-card" onclick="selectCorner(1, 'Group 1 + Group 4')">
-          <strong>①</strong><br>I already provide opportunities to do this
-        </div>
-        <div class="corner-card" onclick="selectCorner(2, 'Group 2 + Group 3')">
-          <strong>②</strong><br>I can easily include opportunities to do this
-        </div>
-        <div class="corner-card" onclick="selectCorner(3, 'Group 2 + Group 3')">
-          <strong>③</strong><br>This will take some planning
-        </div>
-        <div class="corner-card" onclick="selectCorner(4, 'Group 1 + Group 4')">
-          <strong>④</strong><br>I am not sure how to provide this…yet
-        </div>
+      <!-- Embedded Google Slides Frame -->
+      <div class="slide-iframe-wrapper">
+        <iframe id="slides-frame" src="YOUR_GOOGLE_SLIDES_EMBED_URL_HERE" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
       </div>
 
-      <div class="feedback-box" id="corner-feedback">
-        <strong>Partner Instructions:</strong>
-        <p id="partner-match"></p>
+      <div id="s-content" style="line-height:1.6; font-size:1.05rem; margin-top: 1rem;"></div>
+
+      <div id="s-note" style="background:#f0f4f8; border-left:4px solid var(--primary); padding:0.8rem; margin:1rem 0; font-size:0.9rem; color:#555;"></div>
+
+      <!-- Activity Container -->
+      <div id="s-activity" class="act-box hidden">
+        <h4 id="act-title" style="margin-top:0; color:var(--secondary);">Activity Checkpoint</h4>
+        <div id="act-body"></div>
+      </div>
+
+      <div class="nav-bar">
+        <button class="btn" id="btn-prev" style="width: auto;" type="button">← Previous</button>
+        <button class="btn" id="btn-next" style="width: auto;" type="button">Next Slide →</button>
       </div>
     </div>
   </main>
 
-  <footer>
-    Dallas ISD Curriculum Support • Depth and Complexity Framework
-  </footer>
-
   <script>
-    // Random Icon Assignment on Page Load (Slide 23)
-    const icons = ["1 (Patterns)", "2 (Rules)", "3 (Language)", "4 (Across Disciplines)"];
-    const randomIcon = icons[Math.floor(Math.random() * icons.length)];
-    document.getElementById('group-badge').innerText = `Assigned Icon: ${randomIcon}`;
+    document.addEventListener("DOMContentLoaded", function() {
+      let assignedIcon = "";
+      let slideIdx = 0;
 
-    // Gesture Poll Handler
-    function submitGesture(type) {
-      const feedback = document.getElementById('gesture-feedback');
-      feedback.style.display = 'block';
-      document.querySelectorAll('.btn-group .btn').forEach(b => b.classList.remove('active'));
-      event.target.classList.add('active');
-    }
+      // 26-Slide Deck Content
+      const deck = [
+        {
+          title: "Depth and Complexity in the Curriculum",
+          body: "In our Dallas ISD curriculum, we use the Instructional Planning Calendar, or IPC, to see where these opportunities live. If you look at your IPC for Quarter 2, you’ll see Math lessons from our HQIM, concrete experiences, and engagement strategies already mapped out. We want to take a closer look at these lessons to identify where we can highlight Depth and Complexity icons.",
+          note: "SAY: Look at your IPC for Quarter 2 to identify Depth & Complexity opportunities.",
+          act: null
+        },
+        {
+          title: "Energizer: Thinking Beyond the Word",
+          body: "Select either 'depth' or 'complexity'. Write every word, phrase, or image you associate with the term.",
+          note: "Say: As a group, construct a definition.",
+          act: { type: "text", prompt: "Type your word associations:" }
+        },
+        {
+          title: "Depth and Complexity Framework",
+          body: "The Depth & Complexity Framework encourages students to think critically, differentiating and deepening understanding.",
+          note: "Read definitions on slide.",
+          act: null
+        },
+        {
+          title: "Carnegie Problem Types (TPR)",
+          body: "Determine if each problem type aligns with Depth (Ⓓ), Complexity (Ⓒ), or both.",
+          note: "Strategy: TPR (Gestures and movement)",
+          act: { type: "choice", opts: ["Ⓓ Depth", "Ⓒ Complexity"] }
+        },
+        {
+          title: "Problem Type: Worked Example",
+          body: "Worked examples aim at students making connections between steps.",
+          note: "Say: 3, 2, 1... show me your gesture.",
+          act: { type: "choice", opts: ["Ⓓ Depth", "Ⓒ Complexity"] }
+        },
+        {
+          title: "Problem Type: Thumbs Up/Down",
+          body: "Requires students to look for errors and make connections between steps.",
+          note: "Say: 3, 2, 1... show me.",
+          act: { type: "choice", opts: ["Ⓓ Depth", "Ⓒ Complexity"] }
+        },
+        {
+          title: "Problem Type: Who's Correct?",
+          body: "Requires students to question the strategy and determine errors.",
+          note: "Say: 3, 2, 1... show me.",
+          act: { type: "choice", opts: ["Ⓓ Depth", "Ⓒ Complexity"] }
+        },
+        {
+          title: "Problem Type: Thought Bubbles",
+          body: "Provided to remind students about previously learned content or suggest strategies.",
+          note: "Say: 3, 2, 1... show me.",
+          act: { type: "choice", opts: ["Ⓓ Depth", "Ⓒ Complexity"] }
+        },
+        {
+          title: "Gifted Guild Overview",
+          body: "Simple tools that work in any grade level or subject without recreating lessons.",
+          note: "1 min summary.",
+          act: null
+        },
+        {
+          title: "Depth & Complexity Icons",
+          body: "Visual prompts transition slide.",
+          note: "Transition.",
+          act: null
+        },
+        {
+          title: "The 11 Icons Framework",
+          body: "Eleven visual tools prompting students to delve deeper into content.",
+          note: "Toolkit overview.",
+          act: null
+        },
+        {
+          title: "Target Icons for Today",
+          body: "Focusing on 4 icons: Patterns, Rules, Vocabulary, and Across Disciplines.",
+          note: "Read target icons.",
+          act: null
+        },
+        {
+          title: "CBLI Strategy: Four Finger Scale",
+          body: "Look at the example problem and determine which Depth & Complexity icon applies.",
+          note: "Practice gestures for 1-4 scale.",
+          act: { type: "scale", opts: ["1: Patterns", "2: Rules", "3: Vocabulary", "4: Across Disciplines"] }
+        },
+        {
+          title: "Icon Practice 1",
+          body: "What pattern(s) can be revealed from this problem?",
+          note: "Say: 3, 2, 1... show me.",
+          act: { type: "scale", opts: ["1: Patterns", "2: Rules", "3: Vocabulary", "4: Across Disciplines"] }
+        },
+        {
+          title: "Icon Practice 2",
+          body: "What rule(s) can be established by reviewing responses?",
+          note: "Say: 3, 2, 1... show me.",
+          act: { type: "scale", opts: ["1: Patterns", "2: Rules", "3: Vocabulary", "4: Across Disciplines"] }
+        },
+        {
+          title: "Icon Practice 3",
+          body: "How does this help students make connections?",
+          note: "Say: 3, 2, 1... show me.",
+          act: { type: "scale", opts: ["1: Patterns", "2: Rules", "3: Vocabulary", "4: Across Disciplines"] }
+        },
+        {
+          title: "Icon Practice 4",
+          body: "How does this help to make connections?",
+          note: "Say: 3, 2, 1... show me.",
+          act: { type: "scale", opts: ["1: Patterns", "2: Rules", "3: Vocabulary", "4: Across Disciplines"] }
+        },
+        {
+          title: "Across Disciplines 1",
+          body: "How does this extend across disciplines?",
+          note: "Examine problem.",
+          act: { type: "scale", opts: ["1: Patterns", "2: Rules", "3: Vocabulary", "4: Across Disciplines"] }
+        },
+        {
+          title: "Across Disciplines 2",
+          body: "How does this address extend across disciplines?",
+          note: "Examine problem.",
+          act: { type: "scale", opts: ["1: Patterns", "2: Rules", "3: Vocabulary", "4: Across Disciplines"] }
+        },
+        {
+          title: "Across Disciplines 3",
+          body: "How does this address extend across disciplines?",
+          note: "Examine problem.",
+          act: { type: "scale", opts: ["1: Patterns", "2: Rules", "3: Vocabulary", "4: Across Disciplines"] }
+        },
+        {
+          title: "Model Lesson Reflection (Turn & Talk)",
+          body: "Discuss with your neighbor any areas of opportunity in the model lesson.",
+          note: "Turn and talk.",
+          act: { type: "text", prompt: "Record 1-2 discussion points:" }
+        },
+        {
+          title: "DOs and DON'Ts of Implementation",
+          body: "Review implementation guidelines.",
+          note: "Read slide.",
+          act: { type: "choice", opts: ["Understand DOs", "Understand DON'Ts"] }
+        },
+        {
+          title: "Carnegie Exploration (Make Your Mark)",
+          body: "Scan Carnegie lesson and mark sections for your assigned icon.",
+          note: "Be prepared to share.",
+          act: { type: "text", prompt: "Enter marked page/section numbers:" }
+        },
+        {
+          title: "Benefits of Depth and Complexity Icons",
+          body: "Encourage idea generation, independence, and expert-level thinking.",
+          note: "Summary slide.",
+          act: null
+        },
+        {
+          title: "Reflection (4 Corners)",
+          body: "Move to the corner that best represents your current implementation view.",
+          note: "4 Corners strategy execution.",
+          act: { type: "choice", opts: ["Corner 1: Already Doing", "Corner 2: Easily Include", "Corner 3: Needs Planning", "Corner 4: Not Sure Yet"] }
+        },
+        {
+          title: "Thank You!",
+          body: "Thank you for exploring depth and complexity in our curriculum.",
+          note: "Session complete.",
+          act: null
+        }
+      ];
 
-    // Icon Selector Handler (Slides 13-20)
-    const iconQuestions = {
-      1: "What pattern(s) can be revealed from this problem?",
-      2: "What rule(s) can be established by reviewing the responses?",
-      3: "How does this help students make vocabulary connections?",
-      4: "How does this extend across disciplines?"
-    };
+      // Event Listeners
+      document.getElementById('start-btn').addEventListener('click', function() {
+        const icons = ["1: Patterns", "2: Rules", "3: Vocabulary", "4: Across Disciplines"];
+        assignedIcon = icons[Math.floor(Math.random() * icons.length)];
 
-    function selectIcon(num) {
-      const feedback = document.getElementById('icon-feedback');
-      const questionBox = document.getElementById('icon-question');
-      questionBox.innerText = iconQuestions[num];
-      feedback.style.display = 'block';
-      document.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('active'));
-      event.currentTarget.classList.add('active');
-    }
+        document.getElementById('badge').innerText = `Assigned Icon: #${assignedIcon}`;
+        document.getElementById('view-welcome').classList.add('hidden');
+        document.getElementById('view-deck').classList.remove('hidden');
 
-    // Save Lesson Findings
-    function saveNotes() {
-      const notes = document.getElementById('lesson-notes').value;
-      if(notes.trim() !== "") {
-        alert("Your finding has been submitted to the session activity board!");
-      } else {
-        alert("Please enter a note before submitting.");
+        render();
+      });
+
+      document.getElementById('btn-prev').addEventListener('click', function() {
+        if (slideIdx > 0) {
+          slideIdx--;
+          render();
+        }
+      });
+
+      document.getElementById('btn-next').addEventListener('click', function() {
+        if (slideIdx < deck.length - 1) {
+          slideIdx++;
+          render();
+        }
+      });
+
+      function render() {
+        const s = deck[slideIdx];
+        document.getElementById('s-title').innerText = s.title;
+        document.getElementById('s-progress').innerText = `Slide ${slideIdx + 1} of ${deck.length}`;
+        document.getElementById('s-content').innerText = s.body;
+        document.getElementById('s-note').innerHTML = `<strong>Presenter Note:</strong> ${s.note}`;
+
+        const actBox = document.getElementById('s-activity');
+        const actBody = document.getElementById('act-body');
+
+        if (s.act) {
+          actBox.classList.remove('hidden');
+
+          if (s.act.type === 'text') {
+            actBody.innerHTML = `
+              <p>${s.act.prompt}</p>
+              <textarea style="width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:4px; box-sizing:border-box;" rows="3" placeholder="Type notes here..."></textarea>
+            `;
+          } else if (s.act.type === 'choice' || s.act.type === 'scale') {
+            let btns = s.act.opts.map(o => `
+              <button class="opt-btn" type="button" onclick="this.parentElement.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active')); this.classList.add('active');">${o}</button>
+            `).join('');
+            actBody.innerHTML = `<div class="btn-grid">${btns}</div>`;
+          }
+        } else {
+          actBox.classList.add('hidden');
+        }
+
+        document.getElementById('btn-prev').disabled = slideIdx === 0;
+        document.getElementById('btn-next').disabled = slideIdx === deck.length - 1;
+        window.scrollTo(0, 0);
       }
-    }
-
-    // 4 Corners Handler
-    function selectCorner(num, pairing) {
-      document.querySelectorAll('.corner-card').forEach(c => c.classList.remove('selected'));
-      event.currentTarget.classList.add('selected');
-      
-      const feedback = document.getElementById('corner-feedback');
-      const matchText = document.getElementById('partner-match');
-      
-      matchText.innerHTML = `You selected Corner ${num}. When instructed, pair up with participants in your corner. In Phase 2, move to combine with <strong>${pairing}</strong> to discuss your instruction strategies!`;
-      feedback.style.display = 'block';
-    }
+    });
   </script>
 </body>
 </html>
